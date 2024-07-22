@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ניהול תקציב משפחתי</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h3, h4 {
+            color: #333;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            flex: 1 0 50%;
+            text-align: center;
+            padding: 10px;
+            background-color: #ddd;
+            cursor: pointer;
+        }
+        .tab.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        select, input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .card {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        #summary {
+            margin-top: 20px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            .tab {
+                flex: 1 0 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ניהול תקציב משפחתי</h1>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('expenses')">הוצאות</div>
+            <div class="tab" onclick="showTab('income')">הכנסות</div>
+        </div>
+        
+        <div id="expensesTab" class="tab-content active">
+            <div id="expenseForm">
+                <h3>הוצאות קבועות</h3>
+                <div class="form-group">
+                    <select id="fixedExpenseType">
+                        <option value="">בחר סוג הוצאה</option>
+                        <option value="טלפון">טלפון</option>
+                        <option value="טלפון נייד">טלפון נייד</option>
+                        <option value="חשמל">חשמל</option>
+                        <option value="ארנונה ומים">ארנונה ומים</option>
+                        <option value="שכר דירה">שכר דירה</option>
+                        <option value="אינטרנט">אינטרנט</option>
+                        <option value="טלוויזיה בלוויןכבלים">טלוויזיה בלוויןכבלים</option>
+                        <option value="גז">גז</option>
+                        <option value="משכנתא">משכנתא (כולל ביטוח)</option>
+                        <option value="ועד בית">ועד בית</option>
+                        <option value="עוזרת">עוזרת</option>
+                        <option value="מוקד אבטחה">מוקד אבטחה</option>
+                        <option value="מטפלת">מטפלת</option>
+                        <option value="מעוןגן">מעוןגן</option>
+                        <option value="בי"ס">בי"ס</option>
+                        <option value="קאנטרי קלאב">קאנטרי קלאב</option>
+                        <option value="מנוי מפעל הפיס">מנוי מפעל הפיס</option>
+                        <option value="קופ"ח ביטוח בריאות משלים">קופ"ח ביטוח בריאות משלים</option>
+                        <option value="ביטוח רפואי פרטי">ביטוח רפואי פרטי</option>
+                        <option value="ביטוח חיים">ביטוח חיים</option>
+                        <option value="ביטוח דירה">ביטוח דירה</option>
+                        <option value="קופת גמל">קופת גמל</option>
+                        <option value="הלוואות">הלוואות</option>
+                        <option value="ריבית חובה בבנק">ריבית חובה בבנק</option>
+                        <option value="ביטוח רכב">ביטוח רכב (מקיף וחובה)</option>
+                        <option value="חוגיםשיעורי עזר">חוגיםשיעורי עזר</option>
+                        <option value="פסיכולוגהוראה מתקנת">פסיכולוגהוראה מתקנת</option>
+                        <option value="אוניברסיטהמכללה">אוניברסיטהמכללה</option>
+                        <option value="תשלום מזונות">תשלום מזונות</option>
+                        <option value="עיתונים">עיתונים</option>
+                        <option value="נסיעות וחופשות">נסיעות וחופשות</option>
+                        <option value="עמלות בנק">עמלות בנק</option>
+                        <option value="חובות נוספים">חובות נוספים</option>
+                        <option value="טיפולים ורישוי - רכב">טיפולים ורישוי - רכב</option>
+                        <option value="חסכונות">חסכונות</option>
+                        <option value="הוצאות לא מתוכננות">הוצאות לא מתוכננות</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="fixedExpenseAmount" placeholder="סכום">
+                </div>
+                <button onclick="addExpense('fixed')">הוסף הוצאה קבועה</button>
+
+                <h3>הוצאות משתנות</h3>
+                <div class="form-group">
+                    <select id="variableExpenseType">
+                        <option value="">בחר סוג הוצאה</option>
+                        <option value="אוכל ומוצרי מכולת">אוכל ומוצרי מכולת</option>
+                        <option value="סיגריות">סיגריות</option>
+                        <option value="אוכל לתינוקות">אוכל לתינוקות</option>
+                        <option value="חיות מחמד">חיות מחמד</option>
+                        <option value="טיפולים ומוצרים - קוסמטיקה">טיפולים ומוצרים - קוסמטיקה</option>
+                        <option value="מספרה">מספרה</option>
+                        <option value="הוצאות רפואיות">הוצאות רפואיות</option>
+                        <option value="טיפולי שיניים">טיפולי שיניים</option>
+                        <option value="דלק - רכב">דלק - רכב</option>
+                        <option value="מוצרים ורהיטים לבית">מוצרים ורהיטים לבית</option>
+                        <option value="אחזקת בית">אחזקת בית</option>
+                        <option value="ספרים, דיסקים">ספרים, דיסקים</option>
+                        <option value="בילויים">בילויים</option>
+                        <option value="צעצועים">צעצועים</option>
+                        <option value="מתנות לבני המשפחה">מתנות לבני המשפחה</option>
+                        <option value="מתנות לאירועים">מתנות לאירועים</option>
+                        <option value="דמי כיס">דמי כיס</option>
+                        <option value="אחזקת מחשב">אחזקת מחשב</option>
+                        <option value="ביגוד והנעלה">ביגוד והנעלה</option>
+                        <option value="מזומן שונות">מזומן שונות</option>
+                        <option value="לוטוהגרלות">לוטוהגרלות</option>
+                        <option value="טיטולים ומוצרים לתינוק">טיטולים ומוצרים לתינוק</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="variableExpenseAmount" placeholder="סכום">
+                </div>
+                <button onclick="addExpense('variable')">הוסף הוצאה משתנה</button>
+            </div>
+
+            <div id="additionalExpense" class="card" style="display:none;">
+                <h3>הוצאה נוספת</h3>
+                <div class="form-group">
+                    <input type="text" id="additionalExpenseType" placeholder="סוג הוצאה">
+                </div>
+                <div class="form-group">
+                    <input type="number" id="additionalExpenseAmount" placeholder="סכום">
+                </div>
+                <div class="form-group">
+                    <select id="additionalExpenseCategory">
+                        <option value="fixed">קבועה</option>
+                        <option value="variable">משתנה</option>
+                    </select>
+                </div>
+                <button onclick="addAdditionalExpense()">הוסף הוצאה</button>
+            </div>
+
+            <button onclick="showAdditionalExpenseForm()">הוסף הוצאה נוספת</button>
+        </div>
+        
+        <div id="incomeTab" class="tab-content">
+            <div class="card">
+                <h3>הכנסות</h3>
+                <div class="form-group">
+                    <select id="incomeType">
+                        <option value="">בחר סוג הכנסה</option>
+                        <option value="משכורת בן הזוג">משכורת בן הזוג</option>
+                        <option value="משכורת בת הזוג">משכורת בת הזוג</option>
+                        <option value="הכנסות נוספות">הכנסות נוספות</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="incomeAmount" placeholder="סכום">
+                </div>
+                <button onclick="addIncome()">הוסף הכנסה</button>
+            </div>
+        </div>
+        
+        <button onclick="summarizeBudget()">סכם תקציב</button>
+        <button onclick="downloadExcel()">הורד קובץ אקסל</button>
+        
+        <div id="summary"></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script>
+        let expenses = { fixed: [], variable: [] };
+        let incomes = [];
+
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            document.querySelector(`.tab[onclick="showTab('${tabName}')"]`).classList.add('active');
+        }
+
+        function addExpense(type) {
+            const expenseType = document.getElementById(type + 'ExpenseType').value;
+            const expenseAmount = parseFloat(document.getElementById(type + 'ExpenseAmount').value);
+            
+            if (expenseType && !isNaN(expenseAmount)) {
+                expenses[type].push({ type: expenseType, amount: expenseAmount });
+                document.getElementById(type + 'ExpenseType').value = '';
+                document.getElementById(type + 'ExpenseAmount').value = '';
+                updateSummary();
+            } else {
+                alert('נא למלא את כל השדות');
+            }
+        }
+
+        function showAdditionalExpenseForm() {
+            document.getElementById('additionalExpense').style.display = 'block';
+        }
+
+        function addAdditionalExpense() {
+            const expenseType = document.getElementById('additionalExpenseType').value;
+            const expenseAmount = parseFloat(document.getElementById('additionalExpenseAmount').value);
+            const expenseCategory = document.getElementById('additionalExpenseCategory').value;
+            
+            if (expenseType && !isNaN(expenseAmount)) {
+                expenses[expenseCategory].push({ type: expenseType, amount: expenseAmount });
+                document.getElementById('additionalExpenseType').value = '';
+                document.getElementById('additionalExpenseAmount').value = '';
+                document.getElementById('additionalExpense').style.display = 'none';
+                updateSummary();
+            } else {
+                alert('נא למלא את כל השדות');
+            }
+        }
+
+        function addIncome() {
+            const incomeType = document.getElementById('incomeType').value;
+            const incomeAmount = parseFloat(document.getElementById('incomeAmount').value);
+            
+            if (incomeType && !isNaN(incomeAmount)) {
+                incomes.push({ type: incomeType, amount: incomeAmount });
+                document.getElementById('incomeType').value = '';
+                document.getElementById('incomeAmount').value = '';
+                updateSummary();
+            } else {
+                alert('נא למלא את כל השדות');
+            }
+        }
+
+        function summarizeBudget() {
+            const totalIncome = incomes.reduce((sum, income) => sum + income.amount, 0);
+            const totalFixedExpenses = expenses.fixed.reduce((sum, expense) => sum + expense.amount, 0);
+            const totalVariableExpenses = expenses.variable.reduce((sum, expense) => sum + expense.amount, 0);
+            const totalExpenses = totalFixedExpenses + totalVariableExpenses;
+            const balance = totalIncome - totalExpenses;
+
+            let summaryHTML = '<h3>פירוט הכנסות והוצאות</h3>';
+
+            summaryHTML += '<h4>הכנסות:</h4><ul>';
+            incomes.forEach(income => {
+                summaryHTML += `<li>${income.type}: ${income.amount.toFixed(2)} ש"ח</li>`;
+            });
+            summaryHTML += '</ul>';
+
+            summaryHTML += '<h4>הוצאות קבועות:</h4><ul>';
+            expenses.fixed.forEach(expense => {
+                summaryHTML += `<li>${expense.type}: ${expense.amount.toFixed(2)} ש"ח</li>`;
+            });
+            summaryHTML += '</ul>';
+
+            summaryHTML += '<h4>הוצאות משתנות:</h4><ul>';
+            expenses.variable.forEach(expense => {
+                summaryHTML += `<li>${expense.type}: ${expense.amount.toFixed(2)} ש"ח</li>`;
+            });
+            summaryHTML += '</ul>';
+
+            summaryHTML += `
+                <h3>סיכום כללי</h3>
+                <p>סך הכל הכנסות: ${totalIncome.toFixed(2)} ש"ח</p>
+                <p>סך הכל הוצאות קבועות: ${totalFixedExpenses.toFixed(2)} ש"ח</p>
+                <p>סך הכל הוצאות משתנות: ${totalVariableExpenses.toFixed(2)} ש"ח</p>
+                <p>סך הכל הוצאות: ${totalExpenses.toFixed(2)} ש"ח</p>
+                <p>מאזן: ${balance.toFixed(2)} ש"ח</p>
+            `;
+
+            if (balance >= 0) {
+                summaryHTML += `<p style="color: green;">יש לך עודף של ${balance.toFixed(2)} ש"ח</p>`;
+            } else {
+                summaryHTML += `<p style="color: red;">יש לך גירעון של ${Math.abs(balance).toFixed(2)} ש"ח</p>`;
+            }
+
+            document.getElementById('summary').innerHTML = summaryHTML;
+        }
+
+        function updateSummary() {
+            summarizeBudget();
+        }
+
+        function downloadExcel() {
+            const wb = XLSX.utils.book_new();
+            wb.Props = {
+                Title: "תקציב משפחתי",
+                Subject: "תקציב",
+                Author: "מנהל התקציב",
+                CreatedDate: new Date()
+            };
+            
+            // הכנת הנתונים להכנסות
+            const incomeData = [
+                ["סוג הכנסה", "סכום"]
+            ].concat(incomes.map(income => [income.type, income.amount]));
+            
+            // הכנת הנתונים להוצאות קבועות
+            const fixedExpenseData = [
+                ["סוג הוצאה קבועה", "סכום"]
+            ].concat(expenses.fixed.map(expense => [expense.type, expense.amount]));
+            
+            // הכנת הנתונים להוצאות משתנות
+            const variableExpenseData = [
+                ["סוג הוצאה משתנה", "סכום"]
+            ].concat(expenses.variable.map(expense => [expense.type, expense.amount]));
+            
+            // יצירת גיליונות
+            const wsIncome = XLSX.utils.aoa_to_sheet(incomeData);
+            const wsFixedExpense = XLSX.utils.aoa_to_sheet(fixedExpenseData);
+            const wsVariableExpense = XLSX.utils.aoa_to_sheet(variableExpenseData);
+            
+            // הוספת הגיליונות לקובץ
+            XLSX.utils.book_append_sheet(wb, wsIncome, "הכנסות");
+            XLSX.utils.book_append_sheet(wb, wsFixedExpense, "הוצאות קבועות");
+            XLSX.utils.book_append_sheet(wb, wsVariableExpense, "הוצאות משתנות");
+            
+            // שמירת הקובץ
+            XLSX.writeFile(wb, "תקציב_משפחתי.xlsx");
+        }
+    </script>
+</body>
+</html>
